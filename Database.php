@@ -18,8 +18,7 @@ class Database
         );
         try {
             $this->conn = new PDO(
-                'mysql:host=' . HOST . ';dbname=' . NAME . ';charset=utf8', USER, PASSWORD,
-                $options
+                'mysql:host='.HOST.';dbname='.NAME.';charset=utf8', USER, PASSWORD, $options
             );
         } catch (PDOException $e) {
             die("Error!: " . $e->getMessage() . "<br/>");

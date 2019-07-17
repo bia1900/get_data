@@ -19,7 +19,14 @@ class Queries
     public function delete_data_for_date($date, $vehicle)
     {
         $query = ' DELETE FROM `candy_fleet`.`vehicle_data` WHERE traffic_date = "' . $date . '" AND vehicle_no = "' . $vehicle . '" ';
-        $this->conn->query ($query);
+        $stmt = $this->conn->query ($query);
+        $stmt->execute ();
+        if ($stmt->errorCode () != '00000') {
+            echo $query;
+            return false;
+        }
+
+        return true;
     }
 
 
@@ -49,5 +56,33 @@ class Queries
 
     }
 
+    public function insert_data($data)
+    {
+        $query = 'REPLACE INTO `candy_fleet`.`vehicle_data`
+                        ( `vehicle_no`,
+                        `line_number`,
+                        `variant`,
+                        `traffic_date`,
+                        `total_fuel`,
+                        `total_km`,
+                        `distance`)
+                        VALUES
+                        ( "'.$data->vehicleNo.'",
+                        "'.$data->lineNumber.'",
+                        "'.$data->variant.'",
+                        "'.$data->trafficDate.'",
+                        "'.$data->totalFuel.'",
+                        "'.$data->canDistance.'",
+                        "'.$data->distance.'"); 
+                        ';
 
+        $stmt = $this->conn->prepare ($query);
+        $stmt->execute();
+
+        if ($stmt->errorCode () != '00000') {
+            echo $query;
+            return false;
+        }
+        return true;
+    }
 }

@@ -7,26 +7,24 @@ namespace App;
 class Lines
 {
 
-    private $trafficDate;
-    private $lineNumber;
-    private $variant;
-    private $distance;
-    private $totalFuel;
-    private $canDistance;
-    private $canFuel;
-
-    public function __construct ()
-    {
-    }
+    public $trafficDate;
+    public $lineNumber;
+    public $variant;
+    public $distance;
+    public $totalFuel;
+    public $canDistance;
+    public $canFuel;
+    public $time;
+    public $vehicleNo;
 
     public function setTrafficDate ($trafficDate)
     {
         $this->trafficDate = $trafficDate;
     }
 
-    public function getTrafficDate ()
+    public function setVehicleNo ($vehicleNo)
     {
-        return $this->trafficDate;
+        $this->vehicleNo = $vehicleNo;
     }
 
     public function setLineNumber ($lineNumber)
@@ -34,19 +32,9 @@ class Lines
         $this->lineNumber = $lineNumber;
     }
 
-    public function getLineNumber ()
-    {
-        return $this->lineNumber;
-    }
-
     public function setVariant ($variant)
     {
         $this->variant = $variant;
-    }
-
-    public function getVariant ()
-    {
-        return $this->variant;
     }
 
     public function setDistance ($distance)
@@ -54,19 +42,9 @@ class Lines
         $this->distance = $distance;
     }
 
-    public function getDistance ()
-    {
-        return $this->distance;
-    }
-
     public function setTotalFuel ($totalFuel)
     {
         $this->totalFuel = $totalFuel;
-    }
-
-    public function getTotalFuel ()
-    {
-        return $this->totalFuel;
     }
 
     public function setCanDistance ($canDistance)
@@ -74,19 +52,14 @@ class Lines
         $this->canDistance = $canDistance;
     }
 
-    public function getCanDistance ()
-    {
-        return $this->canDistance;
-    }
-
     public function setCanFuel ($canFuel)
     {
         $this->canFuel = $canFuel;
     }
 
-    public function getCanFuel ()
+    public function setTime ($time)
     {
-        return $this->canFuel;
+        $this->time = $time;
     }
 
 }

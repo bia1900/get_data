@@ -45,10 +45,14 @@ class BuildComand
         $variant = '';
 
         while (!feof($process)) {
+
             $line = str_replace(PHP_EOL, '', fgets($process));
             $lineArray = explode("\t", $line);
+
             if ($lineArray[0] != 'Timestamp' && trim($lineArray[0]) != 'Invalid base file identifier' && count($lineArray) > 1 ) {
-                if ($lineArray[1] != '' && $lineArray[2] != '' && $kmLast <= (int) $lineArray[2]) {
+
+                if (trim($lineArray[1])!= '' && trim($lineArray[2])!= '' && $kmLast <= (int) $lineArray[2]) {
+
                     $kmLast = (int) $lineArray[2];
                     $array = array();
                     $array['Time'] = $lineArray[0];
@@ -60,9 +64,12 @@ class BuildComand
                     if ($lineArray[4] != ''){
                         $variant = $lineArray[4];
                     }
+
                     $array['variant'] = $variant;
                     $results[] = $array;
-                } elseif ($lineArray[2] != '' &&  $kmLast < (int) $lineArray[2]) {
+
+                } elseif (trim($lineArray[2])!= '' &&  $kmLast < (int) $lineArray[2]) {
+
                     $kmLast = (int) $lineArray[2];
                     $array = array();
                     $array['Time'] = $lineArray[0];
@@ -71,10 +78,11 @@ class BuildComand
                         $array[$key] = $lineArray[$i];
                         $i++;
                     }
-                    $array['LineNumber'] = isset($results[count($results)-1]['LineNumber']) ? $results[count($results)-1]['LineNumber'] : 0 ;
+                    $array['lineNumber'] = (isset($results[count($results)-1]['lineNumber']) && trim($results[count($results)-1]['lineNumber'])!='' ? $results[count($results)-1]['lineNumber'] : 0) ;
                     if ($lineArray[4] != ''){
                         $variant = $lineArray[4];
                     }
+
                     $array['variant'] = $variant;
                     $results[] = $array;
                 }
@@ -82,12 +90,6 @@ class BuildComand
         }
 
         return $results;
-    }
-
-    public function __destruct()
-    {
-        // TODO: Implement __destruct() method.
-        echo 'distrusa';
     }
 
 }
