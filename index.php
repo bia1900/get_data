@@ -20,6 +20,12 @@ $dates = array(
     date('Y-m-d', strtotime($date . ' -2 day'))
 );
 
+$dates = array();
+//build dates to process array
+for ($i = 1 ; $i<=16 ;$i++){
+    $dates[] = '2019-07-'.$i;
+}
+
 $queries = NEW \App\Queries();
 
 foreach ($dates as $date) {
@@ -40,9 +46,7 @@ foreach ($dates as $date) {
                 if ( trim($values['variant'])=='' ) $values['variant'] = 0;
                 if ( trim($values['totalFuel'])!='' ) $lastCanFuel = $values['totalFuel'];
 
-                //am zis ca fac mereu diferenta pentru fiecare si la sfarsit adun pe linii
                 if (!isset($lines[$values['lineNumber']][$values['variant']])){
-
                     $line = new \App\Lines();
 
                     $line->setTrafficDate($date);
@@ -61,9 +65,7 @@ foreach ($dates as $date) {
                     $line->setTotalFuel(0);
 
                     $lines[$values['lineNumber']][$values['variant']] = $line;
-
                 }else{
-
                     $time = explode(':', $values['Time']);
                     $time = $time[0]*3600+$time[1]*60+$time[2];
 
@@ -74,19 +76,24 @@ foreach ($dates as $date) {
                         $distanceDifference = $values['distance'] - $currentObject->canDistance;
                         $distance = $currentObject->distance+$distanceDifference;
 
-                        if (trim($currentObject->canFuel) == '') $currentObject->setCanFuel($lastCanFuel);
+                        if (trim($currentObject->canFuel) == 0) $currentObject->setCanFuel($lastCanFuel);
                         $fuelDifference = $values['totalFuel'] - $currentObject->canFuel;
                         $fuel = $currentObject->totalFuel+$fuelDifference;
                         if (trim($values['totalFuel']) == '') $fuel = $currentObject->totalFuel;
 
+//                        if ( $fuelDifference > 10 ){
+//                            print_r($currentObject);
+//                            print_r($values);
+//                            var_dump($fuelDifference);
+//                            var_dump($fuel);
+//                            var_dump($lastCanFuel);
+//                        }
                         $currentObject->setDistance($distance);
                         $currentObject->setTotalFuel(round($fuel, 3));
                         $currentObject->setCanDistance($values['distance']);
                         $currentObject->setTime($time);
                         $currentObject->setCanFuel($lastCanFuel);
-
                     }else{
-
                         $currentObject = $lines[$values['lineNumber']][$values['variant']];
 
                         $currentObject->setCanDistance($values['distance']);
@@ -100,6 +107,7 @@ foreach ($dates as $date) {
             foreach ($lines as $variants) {
                 foreach ($variants as $data) {
                     if (!$queries->insert_data($data)) echo 'Nu s-au inserat datele pentru '.$date.' - '.$vehicleId.'!<br/>';
+                    else echo 'S-au inserat datele pentru '.$date.' - '.$vehicleId.'!<br/>'.json_encode($data).'<br/>';
                 }
             }
         }
